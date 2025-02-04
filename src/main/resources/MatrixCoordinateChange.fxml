@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<VBox xmlns:fx="http://javafx.com/fxml/1" fx:controller="by.anpoliakov.controllers.MatrixCoordinateChangeController"
+      spacing="10" alignment="CENTER">
+    <HBox spacing="10">
+        <VBox>
+            <Label text="Value 1:"/>
+            <TextField fx:id="textField1" prefColumnCount="2"/>
+        </VBox>
+        <VBox>
+            <Label text="Value 2:"/>
+            <TextField fx:id="textField2" prefColumnCount="2"/>
+        </VBox>
+        <VBox>
+            <Label text="Value 3:"/>
+            <TextField fx:id="textField3" prefColumnCount="2"/>
+        </VBox>
+        <VBox>
+            <Label text="Value 4:"/>
+            <TextField fx:id="textField4" prefColumnCount="2"/>
+        </VBox>
+        <VBox>
+            <Label text="Value 5:"/>
+            <TextField fx:id="textField5" prefColumnCount="2"/>
+        </VBox>
+        <VBox>
+            <Label text="Value 6:"/>
+            <TextField fx:id="textField6" prefColumnCount="2"/>
+        </VBox>
+        <VBox>
+            <Label text="Value 7:"/>
+            <TextField fx:id="textField7" prefColumnCount="2"/>
+        </VBox>
+        <VBox>
+            <Label text="Value 8:"/>
+            <TextField fx:id="textField8" prefColumnCount="2"/>
+        </VBox>
+        <VBox>
+            <Label text="Value 9:"/>
+            <TextField fx:id="textField9" prefColumnCount="2"/>
+        </VBox>
+    </HBox>
+    <HBox spacing="10" alignment="CENTER">
+        <Button text="Accept" onAction="#handleAcceptButton"/>
+        <Button text="Cancel" onAction="#handleCancelButton"/>
+    </HBox>
+
+    <padding>
+        <Insets top="10" right="10" bottom="10" left="10"/>
+    </padding>
+</VBox>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<AnchorPane fx:controller="by.anpoliakov.controllers.TouchScreenCalibrationWithMatrixController" fx:id="rootPane" prefHeight="550.0"
+            prefWidth="800.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" stylesheets="@style.css">
+    <VBox alignment="TOP_CENTER" spacing="10" AnchorPane.leftAnchor="10" AnchorPane.rightAnchor="10" AnchorPane.topAnchor="10">
+
+        <!-- Заголовок для TextArea -->
+        <Label text="Информация об устройстве:" styleClass="medium_text,bold_text"/>
+
+        <!-- TextArea для вывода информации -->
+        <TextArea fx:id="devicePropertiesArea" styleClass="special_border,medium_text" editable="false" prefHeight="150"
+                  promptText="Тут отображается информация о выбранном устройстве"
+                  wrapText="true" AnchorPane.topAnchor="10" AnchorPane.leftAnchor="10" AnchorPane.rightAnchor="10"
+                  AnchorPane.bottomAnchor="210"/>
+
+        <!-- Заголовок для ListView -->
+        <Label text="Список устройств:" styleClass="medium_text,bold_text"/>
+        <!-- Список устройств -->
+        <ListView fx:id="deviceNames" styleClass="special_border,medium_text" prefHeight="150"
+                  AnchorPane.topAnchor="170" AnchorPane.leftAnchor="10" AnchorPane.rightAnchor="10"
+                  AnchorPane.bottomAnchor="110"/>
+
+        <!-- Блок с кнопками (разделён на две строки) -->
+        <VBox spacing="10" alignment="CENTER" AnchorPane.bottomAnchor="10" AnchorPane.leftAnchor="10"
+              AnchorPane.rightAnchor="10">
+            <!-- Первая строка кнопок -->
+            <HBox spacing="10" alignment="CENTER">
+                <Button onAction="#turnLeftTouch" text="Повернуть влево" styleClass="basic_button,small_button,simple_button"/>
+                <Button onAction="#turnRightTouch" text="Повернуть вправо" styleClass="basic_button,small_button,simple_button"/>
+                <Button onAction="#inversionTouch" text="Развернуть" styleClass="basic_button,small_button,simple_button"/>
+                <Button onAction="#setDefaultTouch" text="Default" styleClass="basic_button,small_button,simple_button"/>
+            </HBox>
+
+            <!-- Вторая строка кнопок -->
+            <HBox spacing="10" alignment="CENTER">
+                <Button onAction="#editSettingsTouchScreen" text="Изменить"
+                        styleClass="basic_button,small_button,edit_button"/>
+                <Button onAction="#saveDeviceConfigToStartup" text="Сохранить скрипт"
+                        styleClass="basic_button,small_button,save_button"/>
+                <Button onAction="#deleteSettingsTouchScreen" text="Удалить скрипт"
+                        styleClass="basic_button,small_button,delete_button"/>
+            </HBox>
+        </VBox>
+    </VBox>
+</AnchorPane>

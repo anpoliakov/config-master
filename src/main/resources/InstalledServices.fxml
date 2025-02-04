@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.*?>
+<SplitPane dividerPositions="0.4" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="by.anpoliakov.controllers.InstalledServicesController">
+
+    <items>
+        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="398.0" prefWidth="208.0">
+            <children>
+                <Text layoutX="45.0" layoutY="28.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Installed services" textAlignment="CENTER" wrappingWidth="146.80224609375">
+                    <font>
+                        <Font name="Arial" size="15.0" />
+                    </font>
+                </Text>
+                <ListView fx:id="installedServicesListView" layoutX="7.0" layoutY="40.0" opacity="0.6" prefHeight="347.0" prefWidth="222.0" />
+            </children>
+        </AnchorPane>
+        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="398.0" prefWidth="395.0">
+            <children>
+                <Button layoutX="27.0" layoutY="28.0" mnemonicParsing="false" onAction="#showLogSelectedService" prefHeight="38.0" prefWidth="139.0" text="Show log file" textAlignment="CENTER">
+                    <font>
+                        <Font name="Arial" size="12.0" />
+                    </font>
+                </Button>
+            <Button layoutX="27.0" layoutY="85.0" mnemonicParsing="false" onAction="#deleteSelectedService" prefHeight="38.0" prefWidth="139.0" text="Delete" textAlignment="CENTER">
+               <font>
+                  <Font name="Arial" size="12.0" />
+               </font>
+            </Button>
+            <Button layoutX="183.0" layoutY="85.0" mnemonicParsing="false" onAction="#deleteSelectedService" prefHeight="38.0" prefWidth="45.0" text="Stop" textAlignment="CENTER">
+               <font>
+                  <Font name="Arial" size="12.0" />
+               </font>
+            </Button>
+            <Button layoutX="236.0" layoutY="85.0" mnemonicParsing="false" onAction="#deleteSelectedService" prefHeight="38.0" prefWidth="46.0" text="Start" textAlignment="CENTER">
+               <font>
+                  <Font name="Arial" size="12.0" />
+               </font>
+            </Button>
+            <Button layoutX="289.0" layoutY="85.0" mnemonicParsing="false" onAction="#deleteSelectedService" prefHeight="38.0" prefWidth="59.0" text="Restart" textAlignment="CENTER">
+               <font>
+                  <Font name="Arial" size="12.0" />
+               </font>
+            </Button>
+            </children>
+        </AnchorPane>
+    </items>
+</SplitPane>

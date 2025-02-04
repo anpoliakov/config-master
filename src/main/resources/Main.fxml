@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane maxHeight="600.0" maxWidth="350.0" prefHeight="600.0" prefWidth="350.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="by.anpoliakov.controllers.MainController">
+    <children>
+        <Text layoutX="14.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="medium_text" text="Информация о наличии доступов:" wrappingWidth="306.344482421875" />
+        <CheckBox fx:id="internetCheckBox" disable="true" layoutX="18.0" layoutY="40.0" styleClass="medium_text" text="Internet" />
+        <CheckBox fx:id="wgCheckBox" disable="true" layoutX="127.0" layoutY="40.0" styleClass="medium_text" text="WireGuard" />
+
+        <Button focusTraversable="false" layoutX="25.0" layoutY="201.0" mnemonicParsing="false" onAction="#showWindowCalibrationWithMatrix" prefHeight="72.0" prefWidth="249.0" styleClass="basic_button,simple_button,large_button" text="Калибровка touch screen с использованием координат" textAlignment="CENTER">
+        </Button>
+        <Button focusTraversable="false" layoutX="25.0" layoutY="101.0" mnemonicParsing="false" onAction="#showWindowCalibrationWithTethering" prefHeight="72.0" prefWidth="249.0" styleClass="basic_button,simple_button,large_button" text="Калибровка touch screen привязкой" textAlignment="CENTER">
+        </Button>
+        <Button layoutX="24.0" layoutY="301.0" mnemonicParsing="false" onAction="#showInstalledServicesWindow" prefHeight="88.0" prefWidth="250.0" styleClass="basic_button,simple_button,large_button" text="Установленные сервисы и их логи" textAlignment="CENTER">
+        </Button>
+        <Button layoutX="24.0" layoutY="402.0" mnemonicParsing="false" onAction="#showWindowCalibrationWithTethering" prefHeight="72.0" prefWidth="249.0" styleClass="basic_button,simple_button,large_button" text="Настроить Appwatchdog" textAlignment="CENTER">
+        </Button>
+    </children>
+</AnchorPane>
