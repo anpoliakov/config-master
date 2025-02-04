@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+    <Appenders>
+        <!-- Консольный аппендер -->
+        <Console name="STDOUT" target="SYSTEM_OUT">
+            <PatternLayout pattern="%5p [%t] (%F:%L) - %m%n"/>
+        </Console>
+
+        <!-- Ротация логов -->
+        <RollingFile name="FILE" fileName="./logs/configmaster.log" filePattern="./logs/server-%d{yyyy-MM-dd}.log.gz">
+            <PatternLayout>
+                <pattern>%d{yyyy-MM-dd HH:mm:ss} [%t] %-5level %logger{36} - %msg%n</pattern>
+            </PatternLayout>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/> <!-- Новый файл каждый день -->
+            </Policies>
+            <CustomHashRolloverStrategy max="365"/>
+        </RollingFile>
+
+
+    </Appenders>
+
+    <Loggers>
+        <!-- Корневой логгер -->
+        <Root level="TRACE">
+            <AppenderRef ref="FILE"/>
+            <AppenderRef ref="STDOUT"/>
+        </Root>
+    </Loggers>
+</Configuration>
+
+        <!--<Configuration status="INFO">-->
+        <!--<Appenders>-->
+        <!--    &lt;!&ndash; Консольный аппендер &ndash;&gt;-->
+        <!--    <Console name="Console" target="SYSTEM_OUT">-->
+        <!--        <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss} [%t] %-5level %logger{36} - %msg%n" />-->
+        <!--    </Console>-->
+
+        <!--    &lt;!&ndash; Файловый аппендер &ndash;&gt;-->
+        <!--    <File name="FileLogger" fileName="logs/configmaster.log" append="true">-->
+        <!--        <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss} [%t] %-5level %logger{36} - %msg%n" />-->
+        <!--    </File>-->
+
+        <!--    &lt;!&ndash; Ротация логов &ndash;&gt;-->
+        <!--    <RollingFile name="RollingFileLogger" fileName="logs/configmaster.log" filePattern="logs/app-%d{yyyy-MM-dd}.log">-->
+        <!--        <PatternLayout>-->
+        <!--            <pattern>%d{yyyy-MM-dd HH:mm:ss} [%t] %-5level %logger{36} - %msg%n</pattern>-->
+        <!--        </PatternLayout>-->
+        <!--        <Policies>-->
+        <!--            <TimeBasedTriggeringPolicy /> &lt;!&ndash; Новый файл каждый день &ndash;&gt;-->
+        <!--            <SizeBasedTriggeringPolicy size="10MB"/> &lt;!&ndash; Новый файл при превышении 10MB &ndash;&gt;-->
+        <!--        </Policies>-->
+        <!--    </RollingFile>-->
+        <!--</Appenders>-->
+
+        <!--<Loggers>-->
+        <!--    &lt;!&ndash; Корневой логгер &ndash;&gt;-->
+        <!--    <Root level="TRACE">-->
+        <!--        <AppenderRef ref="Console" />-->
+        <!--        <AppenderRef ref="RollingFileLogger" />-->
+        <!--    </Root>-->
+        <!--</Loggers>-->
+        <!--</Configuration>-->
