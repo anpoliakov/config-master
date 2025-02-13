@@ -2,6 +2,7 @@ package by.anpoliakov.controllers;
 
 import by.anpoliakov.utils.AutoStartupScriptManager;
 import by.anpoliakov.utils.Constants;
+import by.anpoliakov.utils.SystemCommandExecutor;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -16,7 +17,6 @@ import org.apache.logging.log4j.Logger;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -30,8 +30,6 @@ import static by.anpoliakov.utils.AutoStartupScriptManager.createAutoStartupScri
  **/
 public class TouchScreenCalibrationWithMatrixController {
     private static final Logger logger = LogManager.getLogger(TouchScreenCalibrationWithMatrixController.class);
-    private static final String DEVICE_SEARCH_REGEX = "\\s*↳\\s(.+?)\\s+id=";
-    private static final String DISPLAY_SEARCH_REGEX = "(.+)\\s+connected\\s+.*";
     @FXML
     private ListView<String> deviceNames;
     @FXML
@@ -40,20 +38,20 @@ public class TouchScreenCalibrationWithMatrixController {
 
     @FXML
     private void initialize() {
-        List<String> deviceNamesList = getDeviceNames();
+        List<String> deviceNamesList = SystemCommandExecutor.getInputDeviceNames();
 
         if (!deviceNamesList.isEmpty()) {
             deviceNames.getItems().addAll(deviceNamesList);
             deviceNames.getSelectionModel().select(0);
 
             this.selectedDevice = deviceNames.getSelectionModel().getSelectedItem();
-            String propertiesDevice = getPropertiesDevice(this.selectedDevice);
+            String propertiesDevice = SystemCommandExecutor.getPropertiesDevice(this.selectedDevice);
             devicePropertiesArea.setText(propertiesDevice);
 
             deviceNames.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
                 if (newValue != null) {
                     selectedDevice = newValue;
-                    devicePropertiesArea.setText(getPropertiesDevice(this.selectedDevice));
+                    devicePropertiesArea.setText(SystemCommandExecutor.getPropertiesDevice(this.selectedDevice));
                 }
             });
         } else {
@@ -62,57 +60,28 @@ public class TouchScreenCalibrationWithMatrixController {
         }
     }
 
-    private List<String> getDeviceNames() {
-        ProcessBuilder processBuilder = new ProcessBuilder("xinput", "list");
-        List<String> devices = new ArrayList();
-
-        try {
-            Process process = processBuilder.start();
-            BufferedReader buffReader = new BufferedReader(new InputStreamReader(process.getInputStream(), StandardCharsets.UTF_8));
-            Pattern pattern = Pattern.compile(DEVICE_SEARCH_REGEX);
-            String line;
-
-            while ((line = buffReader.readLine()) != null) {
-                if (line.contains("Virtual core pointer") || line.startsWith("⎜")) {
-                    Matcher matcher = pattern.matcher(line);
-                    if (matcher.find()) {
-                        devices.add(matcher.group(1));
-                    }
-                }
-            }
-            process.waitFor();
-        } catch (IOException e) {
-            logger.error("IOException during execution of getDeviceNames() method");
-            throw new RuntimeException(e);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-
-        return devices;
-    }
-
     @FXML
     private void turnRightTouch() {
         applyCoordinateMatrix(this.selectedDevice, Constants.COORDINATE_RIGHT_ROTATION);
-        devicePropertiesArea.setText(getPropertiesDevice(selectedDevice));
+        devicePropertiesArea.setText(SystemCommandExecutor.getPropertiesDevice(this.selectedDevice));
     }
 
     @FXML
     private void turnLeftTouch() {
         applyCoordinateMatrix(this.selectedDevice, Constants.COORDINATE_LEFT_ROTATION);
-        devicePropertiesArea.setText(getPropertiesDevice(selectedDevice));
+        devicePropertiesArea.setText(SystemCommandExecutor.getPropertiesDevice(this.selectedDevice));
     }
 
     @FXML
     private void inversionTouch() {
         applyCoordinateMatrix(this.selectedDevice, Constants.COORDINATE_INVERSION);
-        devicePropertiesArea.setText(getPropertiesDevice(selectedDevice));
+        devicePropertiesArea.setText(SystemCommandExecutor.getPropertiesDevice(this.selectedDevice));
     }
 
     @FXML
     private void setDefaultTouch() {
         applyCoordinateMatrix(this.selectedDevice, Constants.COORDINATE_DEFAULT);
-        devicePropertiesArea.setText(getPropertiesDevice(selectedDevice));
+        devicePropertiesArea.setText(SystemCommandExecutor.getPropertiesDevice(this.selectedDevice));
     }
 
     @FXML
@@ -124,7 +93,7 @@ public class TouchScreenCalibrationWithMatrixController {
 
             if (!Arrays.equals(currentMatrix, newMatrix) && newMatrix != null) {
                 applyCoordinateMatrix(this.selectedDevice, newMatrix);
-                devicePropertiesArea.setText(getPropertiesDevice(this.selectedDevice));
+                devicePropertiesArea.setText(SystemCommandExecutor.getPropertiesDevice(this.selectedDevice));
             } else {
                 System.out.println("Изменения в координатах не производились.");
             }
@@ -182,33 +151,11 @@ public class TouchScreenCalibrationWithMatrixController {
         }
     }
 
-    private String getPropertiesDevice(String deviceName) {
-        ProcessBuilder processBuilder = new ProcessBuilder("sudo", "xinput", "list-props", deviceName);
-        StringBuilder builder = new StringBuilder();
-
-        try {
-            Process process = processBuilder.start();
-            BufferedReader buffReader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-            String line;
-            while ((line = buffReader.readLine()) != null) {
-                builder.append(line).append("\n");
-            }
-            process.waitFor();
-        } catch (IOException e) {
-            e.printStackTrace();
-            devicePropertiesArea.setText("ERROR retrieving properties for device: " + deviceName);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-
-        return builder.toString();
-    }
-
     private String[] getCoordinateMatrix(String deviceName) {
         List<String> matrixList = new ArrayList<>();
 
         Pattern pattern = Pattern.compile(Constants.NAME_PROPERTIES_TRANSFORMATION + ".+\n");
-        Matcher matcher = pattern.matcher(getPropertiesDevice(deviceName));
+        Matcher matcher = pattern.matcher(SystemCommandExecutor.getPropertiesDevice(deviceName));
 
         if (matcher.find()) {
             String str = matcher.group();
@@ -245,48 +192,5 @@ public class TouchScreenCalibrationWithMatrixController {
         } catch (IOException e) {
             throw new RuntimeException("Failed to load MatrixCoordinateChange.fxml", e);
         }
-    }
-
-    /**
-     * Методы для работы с тачем по 2-му способу (через привязку тача к конкретному дисплею)
-     **/
-    @FXML
-    private void setBind() {
-//        String command = String.format("xinput --map-to-output \"%s\" %s",
-//                nameInputDevice,
-//                nameHDMI);
-
-        
-        getExistDisplayNames();
-    }
-
-    @FXML
-    private void deleteBind() {
-
-    }
-
-    private List<String> getExistDisplayNames() {
-        ProcessBuilder processBuilder = new ProcessBuilder("xrandr");
-        Pattern pattern = Pattern.compile(DISPLAY_SEARCH_REGEX);
-        List<String> displayNames = new ArrayList<>();
-
-        try {
-            Process process = processBuilder.start();
-
-            try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
-                String line;
-
-                while ((line = bufferedReader.readLine()) != null) {
-                    Matcher matcher = pattern.matcher(line);
-                    if (matcher.find()) {
-                        displayNames.add(matcher.group(1));
-                    }
-                }
-            }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-        return displayNames;
     }
 }

@@ -21,14 +21,13 @@ public class Runner extends Application {
     private static final Logger logger = LogManager.getLogger(Runner.class);
     private static final byte NUM_REQUIRED_PARAMETERS = 1;
 
-    /**
-     * Пусть первый параметр при запуске приложения - вснгда будет properties файлом
-     * его название не столь важно - если в нём будут все необходимые ключи
-     **/
     @Override
     public void start(Stage primaryStage) {
         List<String> args = getParameters().getRaw();
+
         validateParameters(args);
+        String configFilePath = args.get(0);
+        PropertiesManager.initializeInstance(configFilePath);
         if (SystemInfo.isLinux()) {
             try {
                 Parent root = FXMLLoader.load(getClass().getResource("/Main.fxml"));
@@ -37,7 +36,7 @@ public class Runner extends Application {
                 primaryStage.setMinWidth(350);
                 primaryStage.setMinHeight(600);
                 primaryStage.setResizable(false);
-                primaryStage.centerOnScreen(); //центруем окно в середине монитора
+                primaryStage.centerOnScreen();
                 primaryStage.show();
             } catch (IOException e) {
                 throw new RuntimeException("Error during FXML loading!");
@@ -53,11 +52,9 @@ public class Runner extends Application {
             throw new IllegalArgumentException("Not enough parameters to run the application!");
         }
 
-        try {
-            String configFilePath = args.get(0).trim();
-            PropertiesManager.getInstance(configFilePath);
-        } catch (IllegalArgumentException e) {
-            System.exit(1);
+        String configFilePath = args.get(0).trim();
+        if(configFilePath == null || configFilePath.isEmpty()){
+            throw new IllegalArgumentException("Not correct parameters!");
         }
     }
 
