@@ -16,7 +16,7 @@ public class PropertiesManager {
         loadProperties();
     }
 
-    public static PropertiesManager getInstance(String configFilePath) {
+    public static PropertiesManager initializeInstance(String configFilePath) {
         if (instance == null) {
             instance = new PropertiesManager(configFilePath);
         }
@@ -25,7 +25,7 @@ public class PropertiesManager {
 
     public static PropertiesManager getInstance() {
         if (instance == null) {
-            throw new IllegalStateException("PropertiesManager не был инициализирован. Вызовите getInstance(String configFilePath) сначала.");
+            throw new IllegalStateException("PropertiesManager не был инициализирован. Вызовите initializeInstance(String configFilePath) сначала.");
         }
         return instance;
     }
@@ -41,15 +41,6 @@ public class PropertiesManager {
     public String getProperty(String key) {
         return properties.getProperty(key);
     }
-
-//    public void setProperty(String key, String value) {
-//        properties.setProperty(key, value);
-//        try (FileOutputStream output = new FileOutputStream(configFilePath)) {
-//            properties.store(output, null);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//    }
 
     public void updateProperty(String key, String newValue) {
         if (properties.containsKey(key)) {

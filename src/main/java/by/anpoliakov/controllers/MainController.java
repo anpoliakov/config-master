@@ -1,5 +1,6 @@
 package by.anpoliakov.controllers;
 
+import by.anpoliakov.utils.PropertiesManager;
 import by.anpoliakov.utils.SystemInfo;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -15,7 +16,8 @@ import java.io.IOException;
 
 public class MainController {
     private static final Logger logger = LogManager.getLogger(MainController.class);
-    private static final int DELAY_BETWEEN_CHECKS = 10000;
+    private static final PropertiesManager propManager = PropertiesManager.getInstance();
+    private static final String NAME_PARAM_FREQUENCY = "check.frequency";
 
     @FXML
     private CheckBox internetCheckBox;
@@ -39,7 +41,10 @@ public class MainController {
                 });
 
                 try {
-                    Thread.sleep(DELAY_BETWEEN_CHECKS);
+                    int frequencyChecking = Integer.parseInt(propManager.getProperty(NAME_PARAM_FREQUENCY));
+                    Thread.sleep(frequencyChecking);
+                } catch (NumberFormatException e){
+                    logger.error("Error in the parameter of key [" + NAME_PARAM_FREQUENCY + "].");
                 } catch (InterruptedException e) {
                     logger.warn("Stopping the thread on analyzing internet and WireGuard availability");
                 }
@@ -56,8 +61,6 @@ public class MainController {
             Parent root = loader.load();
             Stage stage = new Stage();
             stage.setTitle("List Devices");
-
-            //разрешение на растяжение
             stage.setResizable(true);
             stage.setMinWidth(800);
             stage.setMinHeight(550);
@@ -78,8 +81,6 @@ public class MainController {
             Parent root = loader.load();
             Stage stage = new Stage();
             stage.setTitle("List Devices");
-
-            //разрешение на растяжение
             stage.setResizable(true);
             stage.setMinWidth(800);
             stage.setMinHeight(550);
@@ -100,9 +101,9 @@ public class MainController {
             Parent root = loader.load();
             Stage stage = new Stage();
             stage.setTitle("Installed services");
-            stage.setResizable(false);
+            stage.setResizable(true);
             stage.setMinWidth(800);
-            stage.setMinHeight(600);
+            stage.setMinHeight(550);
             stage.setScene(new Scene(root));
             stage.show();
         } catch (IOException e) {
